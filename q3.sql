@@ -113,30 +113,16 @@ CREATE VIEW ContiThreePre AS
 
 
 Drop VIEW IF EXISTS ContiThree CASCADE;
---the first day of the continuous three days of those drivers who are not bylaw
+-- the continuous three days of those drivers who are not bylaw
 CREATE VIEW ContiThree AS
     SELECT p1.driver_id AS driver,CAST(CONCAT(p1.year, '-', p1.month, '-', p1.day) AS DATE) AS start,
-    p1.totaltime * interval '1 sec' AS driving,
-    p1.totalbreak * interval '1 sec' AS breaks
+    (p1.totaltime+p2.totaltime+p3.totaltime) * interval '1 sec' AS driving,
+    (p1.totalbreak+p2.totalbreak+p3.totalbreak) * interval '1 sec' AS breaks
     FROM  ContiThreePre p1, ContiThreePre p2,  ContiThreePre p3
-    WHERE EXTRACT(DAY FROM p2.datetime - p1.datetime) = 1 AND EXTRACT(DAY FROM p3.datetime - p2.datetime) = 1
-           AND EXTRACT(DAY FROM p3.datetime - p1.datetime) = 2;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    WHERE DATE_PART('day', p2.datetime::timestamp - p1.datetime::timestamp)=1 
+          AND DATE_PART('day', p3.datetime::timestamp - p2.datetime::timestamp)=1 
+          AND DATE_PART('day', p3.datetime::timestamp - p1.datetime::timestamp)= 2;
+    
 
 
 -- Your query that answers the question goes below the "insert into" line:
