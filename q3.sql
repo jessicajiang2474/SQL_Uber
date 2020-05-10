@@ -1,9 +1,5 @@
 -- Rest bylaw
 
--- You must not change the next 2 lines or the table definition.
-SET SEARCH_PATH TO uber, public;
-drop table if exists q3 cascade;
-
 create table q3(
     driver integer NOT NULL REFERENCES Driver,
     start DATE,
@@ -35,8 +31,6 @@ CREATE VIEW DropoffNew AS
   WHERE dr.request_id = di.request_id;
 
 
-
-
 DROP VIEW IF EXISTS Timerange CASCADE;
 -- each request's time spent
 CREATE VIEW Timerange AS
@@ -45,8 +39,6 @@ CREATE VIEW Timerange AS
           p.month, p.day
    From PickupNew p,DropoffNew d
    WHERE d.year = p.year AND d.month = p.month AND d.day = p.day AND d.request_id = p.request_id;
-
-
 
 
 DROP VIEW IF EXISTS DriverTime CASCADE;
@@ -110,8 +102,6 @@ CREATE VIEW ContiThreePre AS
 
 
 
-
-
 Drop VIEW IF EXISTS ContiThree CASCADE;
 -- the continuous three days of those drivers who are not bylaw
 CREATE VIEW ContiThree AS
@@ -123,7 +113,6 @@ CREATE VIEW ContiThree AS
           AND DATE_PART('day', p3.datetime::timestamp - p2.datetime::timestamp)=1 
           AND DATE_PART('day', p3.datetime::timestamp - p1.datetime::timestamp)= 2;
     
-
 
 -- Your query that answers the question goes below the "insert into" line:
 insert into q3
