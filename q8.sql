@@ -14,7 +14,7 @@ difference FLOAT
 DROP VIEW IF EXISTS compRequest CASCADE;
 -- all the completed ride
 CREATE VIEW compReq AS
-  ( SELECT request_id FROM Request ) UNION (SELECT request_id FROM DropOff);
+  ( SELECT request_id FROM Request ) INTERSECT (SELECT request_id FROM DropOff);
 
 
 DROP VIEW IF EXISTS compSep CASCADE;
